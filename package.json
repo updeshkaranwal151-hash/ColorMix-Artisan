@@ -4,7 +4,7 @@
   "private": true,
   "description": "A static web application for artists, created by Apoorv Karanwal.",
   "scripts": {
-    "build": "echo \"No build step required. This is a static site.\" && exit 0"
+    "build": "mkdir dist && cp -r components services *.tsx *.ts *.html *.json dist/"
   },
   "author": "Apoorv Karanwal"
 }
