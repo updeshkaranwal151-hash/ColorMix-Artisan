@@ -1,0 +1,10 @@
+{
+  "name": "colormix-artisan",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A static web application for artists, created by Apoorv Karanwal.",
+  "scripts": {
+    "build": "echo \"No build step required. This is a static site.\" && exit 0"
+  },
+  "author": "Apoorv Karanwal"
+}
