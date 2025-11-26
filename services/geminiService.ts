@@ -44,7 +44,7 @@ export const getColorDetails = async (hexColor: string): Promise<ColorData> => {
     }
 
     try {
-        const prompt = `Analyze the color with hex code ${hexColor}. Provide its common name and a step-by-step guide for a painter to mix this color. The mixing guide should use only primary colors (specifically Cadmium Red, Cadmium Yellow, and Ultramarine Blue) and Titanium White and Mars Black for tinting and shading. The steps should be practical and easy for an artist to follow.`;
+        const prompt = `Analyze the color with hex code ${hexColor}. Provide its common name and a step-by-step guide for a painter to mix this color. The mixing guide should use only primary colors (specifically Cadmium Red, Cadmium Yellow, and Ultramine Blue) and Titanium White and Mars Black for tinting and shading. The steps should be practical and easy for an artist to follow.`;
 
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
@@ -67,6 +67,18 @@ export const getColorDetails = async (hexColor: string): Promise<ColorData> => {
 
     } catch (error) {
         console.error("Error fetching color details from AI service:", error);
-        throw new Error("Failed to get color details. The creative AI may be busy or unavailable. Please try again in a moment.");
+        
+        let errorMessage = "Failed to get color details. The creative AI may be busy or unavailable. Please try again in a moment.";
+
+        if (error instanceof Error && error.message) {
+            const lowerCaseMessage = error.message.toLowerCase();
+            if (lowerCaseMessage.includes('permission_denied') || lowerCaseMessage.includes('does not have permission')) {
+                errorMessage = "Authentication Error: The provided API key is invalid or does not have the required permissions. Please check your API key and its configuration in the Google AI Studio.";
+            } else if (lowerCaseMessage.includes('api key not valid')) {
+                 errorMessage = "Authentication Error: The provided API key is not valid. Please ensure you have copied the entire key correctly.";
+            }
+        }
+
+        throw new Error(errorMessage);
     }
 };
